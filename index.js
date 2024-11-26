@@ -20,37 +20,39 @@ mongoose.connect(mongoUri, {
 .then(()=> console.log("conexion exitosa a mongoDB"))
 .catch((error) => console.error("error al conectar a la base de datos:" , error));
 // creamos un modelos de mongoose para nuestros datos 
-const Item = mongoose.model("users" , new mongoose.Schema({
+const Usuario = mongoose.model("users" , new mongoose.Schema({
     name: {type: String, require: true},
     email: String,
-    contraseña: String
+    contraseña: String,
+    es_empresa: Boolean
 }));
+
 
 // crear las rutas para el CRUD (CREATE, RELEAD, UPDATE, DELETE)
 
 //Ruta para obtener todos los nombres con sus descripciones get optener
-//http://localhost:5000/items
-app.get("/items", async (req, res) => {
-    const items = await Item.find(); // Obtenemos la lista de los nombres en formato JSON
-    res.json(items);
+//http://localhost:5000/Usuarios
+app.get("/Usuarios", async (req, res) => {
+    const Usuarios = await Usuario.find(); // Obtenemos la lista de los nombres en formato JSON
+    res.json(Usuarios);
 });
 // ruta para el CREAR post
 
-app.post("/items", async (req, res) => {
-    const newItem = new Item(req.body);
-    await newItem.save();// guardar el usuario con el save en base de datos
-    res.status(201).json(newItem); // enviamos los datos de usuario agregado en json
+app.post("/Usuarios", async (req, res) => {
+    const newUsuario = new Usuario(req.body);
+    await newUsuario.save();// guardar el usuario con el save en base de datos
+    res.status(201).json(newUsuario); // enviamos los datos de usuario agregado en json
 });
 
 // Ruta para actualizar un elemento existente
-app.put("/items/:id", async (req, res) => {
-    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(updatedItem); // Enviamos el elemento actualizado en formato JSON
+app.put("/Usuarios/:id", async (req, res) => {
+    const updatedUsuario = await Usuario.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updatedUsuario); // Enviamos el elemento actualizado en formato JSON
 });
 
 // Ruta para eliminar un elemento
-app.delete("/items/:id", async (req, res) => {
-    await Item.findByIdAndDelete(req.params.id); // Eliminamos el elemento de la base de datos
+app.delete("/Usuarios/:id", async (req, res) => {
+    await Usuario.findByIdAndDelete(req.params.id); // Eliminamos el elemento de la base de datos
     res.status(204).send(); // Enviamos un código de estado 204 sin contenido
 });
 
